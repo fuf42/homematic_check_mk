@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+degree_sign= u'\N{DEGREE SIGN}'
+
 def parse_homematic(info):
   result = { }
   for line in info:
@@ -66,7 +68,8 @@ def inventory_homematic_humidity(parsed):
     data = parsed[line]
     if isinstance(data, dict):
       temperature = data.get('TEMPERATURE', data.get('ACTUAL_TEMPERATURE', None))
-      humidity = data.get('HUMIDITY', None)
+      # humidity = data.get('HUMIDITY', None)
+      humidity = data.get('HUMIDITY', data.get('ACTUAL_HUMIDITY', None))
 
       if temperature is not None and humidity is not None:
         yield line, { }
@@ -76,7 +79,8 @@ def check_homematic_humidity(item, params, parsed):
     if line == item:
       data = parsed[line]
       temperature = data.get('TEMPERATURE', data.get('ACTUAL_TEMPERATURE', None))
-      humidity = data.get('HUMIDITY', None)
+      # humidity = data.get('HUMIDITY', None)
+      humidity = data.get('HUMIDITY', data.get('ACTUAL_HUMIDITY', None))
 
       if humidity is None or temperature is None:
         return 3, 'Humidity or temperature are not available'
@@ -92,7 +96,7 @@ def check_homematic_humidity(item, params, parsed):
       else:
         state = 0
 
-      message = "Temperature: %f, Humidity: %f (last change: %s)" % (temperature, humidity, date)
+      message = "Temperature: %.1f%sC, Humidity: %.0f%% (last change: %s)" % (temperature, degree_sign, humidity, date)
       perfdata = [
         ('temperature', temperature),
         ('humidity', humidity),
