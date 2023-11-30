@@ -1,3 +1,20 @@
+#!/usr/bin/env python3
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+
+from typing import Type, Optional, List
+from cmk.gui.i18n import _
+from cmk.gui.valuespec import (
+    Dictionary,
+    Integer,
+    Tuple,
+    TextAscii,
+)
+from cmk.gui.plugins.wato import (
+    RulespecGroupCheckParametersApplications,
+    CheckParameterRulespecWithItem,
+    rulespec_registry,
+)
+
 checkgroups = []
 subgroup_os = _("Temperature, Humidity, Electrical Parameters, etc.")
 
