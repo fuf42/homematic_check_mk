@@ -47,9 +47,9 @@ def check_homematic_power_measurement(item, params, parsed):
       #frequency = float(frequency[0])
       #energy_counter = float(energy_counter[0])
 
-      if power <= params['critical'][0] or power >= params['critical'][1]:
+      if power < params['critical'][0] or power >= params['critical'][1]:
         state = 2
-      elif power <= params['warning'][0] or power >= params['warning'][1]:
+      elif power < params['warning'][0] or power >= params['warning'][1]:
         state = 1
       else:
         state = 0
