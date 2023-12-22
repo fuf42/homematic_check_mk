@@ -138,7 +138,7 @@ proc get_homematic_check_result { } {
         foreach (_dpId, _ch.DPs()) {
           _dp = dom.GetObject(_dpId);
 
-          if (_dp.Value()) {
+          if (_dp.Value() || _dp.Value() == 0) {
             _name = _dp.Name().StrValueByIndex(".", 2);
             WriteLine(_ch.Name() # ";" # _name # ";" # _dp.Value() # ";" # _dp.Timestamp());
           }
