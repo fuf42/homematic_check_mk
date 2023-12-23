@@ -135,20 +135,29 @@ def check_homematic_dutycycle(item, params, parsed):
       if dutycycle is None :
         return 3, 'Duty cycle is not available'
 
-      dutycycle = float(dutycycle[0])
-      if dutycycle >= params['critical']:
+      try:
+        dutycycle = float(dutycycle[0])
+      except ValueError:
+        # HMIP-PSM-2 and others are returning True/False for dutycycle (WTF?)
+        if dutycycle[0].lower() in ("yes", "true", "t", "1"):
+          dutycycle = True
+        else:
+          dutycycle = False
+
+      if dutycycle == True or dutycycle >= params['critical']:
         state = 2
       elif dutycycle >= params['warning']:
         state = 1
       else:
         state = 0
 
-      message = "Duty cycle: %f" % (dutycycle)
+      message = "Duty cycle: %s" % (dutycycle)
       perfdata = [
         ('dutycycle', dutycycle, params['warning'], params['critical'], 0, 100),
       ]
 
       return state, message, perfdata
+
 
 factory_settings['homematic_dutycycle_default_levels'] = {
     'warning' : 50,
