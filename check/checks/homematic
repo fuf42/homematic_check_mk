@@ -144,7 +144,7 @@ def check_homematic_dutycycle(item, params, parsed):
         else:
           dutycycle = False
 
-      if dutycycle == True or dutycycle >= params['critical']:
+      if dutycycle is True or dutycycle >= params['critical']:
         state = 2
       elif dutycycle >= params['warning']:
         state = 1
