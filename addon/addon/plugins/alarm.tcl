@@ -39,7 +39,7 @@ foreach(sTmp, oTmpArray.EnumIDs())
     ! sLastTriggerOut                                     Wassermelder Aquarium (HmIP-SWD 001898A9A36CF2:1) 
     ! sTriggerDesc                                        DPInfo()
 
-    WriteLine("ALARM_MSG;" # oTmp.Name() # ";" # sLastTriggerOut # ";" # oTmp.ValueName() # ";" # oTmp.Timestamp().ToString("%Y-%m-%d %H:%M:%S")  )
+    WriteLine("ALARM_MSG;" # oTmp.Name() # ";" # sLastTriggerOut # ";" # oTmp.ValueName() # ";" # sTriggerDesc # ";" # oTmp.AlCounter() # ";" # oTmp.Timestamp().ToString("%Y-%m-%d %H:%M:%S")  )
 
   }
 }
