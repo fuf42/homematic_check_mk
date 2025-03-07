@@ -48,6 +48,7 @@ foreach(sTmp, oTmpArray.EnumIDs())
   return $result(STDOUT)
 }
 
+puts "<<<homematic_alarms:sep(59)>>>"
 puts [string trim [get_homematic_alarms]]
 
 
