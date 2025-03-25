@@ -42,14 +42,14 @@ proc handle_connection { channelId clientAddress clientPort } {
 
     puts $channelId "<<<lnx_if>>>"
     puts $channelId "\[start_iplink\]"
-    puts $channelId "[exec ip link]"
+    puts $channelId "[exec /sbin/ip link]"
     puts $channelId "\[end_iplink\]"
 
     puts $channelId "<<<lnx_if:sep(58)>>>"
     puts $channelId "[exec sed 1,2d /proc/net/dev]"
-    if { [file exists /usr/sbin/ethtool] } {
-      puts $channelId [exec sh -c {sed -e 1,2d /proc/net/dev | cut -d':' -f1 | sort | while read eth; do echo "[$eth]"; ethtool "$eth" | grep -E '(Speed|Duplex|Link detected|Auto-negotiation):'; echo -e "\tAddress: $(cat "/sys/class/net/$eth/address")\n"; done}]
-    }
+    #if { [file exists /usr/sbin/ethtool] } {
+    #  puts $channelId [exec sh -c {sed -e 1,2d /proc/net/dev | cut -d':' -f1 | sort | while read eth; do echo "[$eth]"; /usr/sbin/ethtool "$eth" | grep -E '(Speed|Duplex|Link detected|Auto-negotiation):'; echo -e "\tAddress: $(cat "/sys/class/net/$eth/address")\n"; done}]
+    #}
 
     puts $channelId "<<<df>>>"
     if { [exec busybox | sed -n 1p | awk { { print $2 } }] == "v1.20.2" } {
@@ -120,6 +120,7 @@ proc get_homematic_check_result { } {
     string _dpId;
     object _dp;
     string _name;
+    object _dpv;
 
     foreach (_svcId, dom.GetObject(ID_SERVICES).EnumUsedIDs()) {
       _svc = dom.GetObject(_svcId);
@@ -142,8 +143,9 @@ proc get_homematic_check_result { } {
 
         foreach (_dpId, _ch.DPs()) {
           _dp = dom.GetObject(_dpId);
+          _dpv = _dp.Value();
 
-          if (_dp.Value()) {
+          if (_dpv || _dpv == 0) {
             _name = _dp.Name().StrValueByIndex(".", 2);
             WriteLine(_ch.Name() # ";" # _name # ";" # _dp.Value() # ";" # _dp.Timestamp());
           }
