@@ -1,39 +1,42 @@
 #!/bin/sh
 
-ADDONNAME=check_mk_agent
-ADDONDIR=/usr/local/addons/${ADDONNAME}
-#WWWDIR=/usr/local/etc/config/addons/www/${ADDONNAME}
-RCDDIR=/usr/local/etc/config/rc.d
+ADDON_NAME=check_mk_agent
+ADDON_DIR=/usr/local/addons/${ADDON_NAME}
+#WWWDIR=/usr/local/etc/config/addons/www/${ADDON_NAME}
+RCD_DIR=/usr/local/etc/config/rc.d
 
 case "$1" in
 
   ""|start)
-    tclsh $ADDONDIR/server.tcl &
+    tclsh $ADDON_DIR/server.tcl &
     ;;
 
   stop)
-    tclsh $ADDONDIR/stop.tcl
+    tclsh $ADDON_DIR/stop.tcl
     ;;
 
   restart|reload)
-    tclsh $ADDONDIR/stop.tcl
+    tclsh $ADDON_DIR/stop.tcl
     sleep 2
-    tclsh $ADDONDIR/server.tcl &
+    tclsh $ADDON_DIR/server.tcl &
     ;;
 
   info)
-    echo "Info: <b>(Inoffical) check_mk agent</b>"
-    echo "Version: 1.3"
+    version=$(cat ${ADDON_DIR}/VERSION)
+    echo "Info: <b>(Inoffical) check_mk agent</b></br>"
+    echo "Info: <a href='https://github.com/fuf42/homematic_check_mk' target='_blank'>https://github.com/fuf42/homematic_check_mk</a>"
+    echo "Version: ${version}"
     echo "Name: check_mk_agent"
     echo "Operations: uninstall restart"
+    # echo "Update: /addons/${ADDON_NAME}/update.cgi"
     ;;
 
   uninstall)
-    tclsh $ADDONDIR/stop.tcl
+    tclsh $ADDON_DIR/stop.tcl
 
-    rm -rf ${ADDONDIR}
+    rm -rf ${ADDON_DIR}
     rm -rf ${WWWDIR}
-    rm -f ${RCDDIR}/${ADDONNAME}
+    rm -f ${RCD_DIR}/${ADDON_NAME}
     ;;
 
   *)

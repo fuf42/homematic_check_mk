@@ -1,4 +1,6 @@
 #!/bin/sh
 
 version=$(cat VERSION)
-tar tvzf ../check_mk_agent-${version}.tgz .
+rm -f ../check_mk_agent-*.tgz
+tar cvzf ../check_mk_agent-${version}.tgz .
+

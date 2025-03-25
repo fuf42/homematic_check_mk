@@ -1,8 +1,8 @@
 #!/bin/sh
 
-ADDONNAME=check_mk_agent
+ADDON_NAME=check_mk_agent
 CONFIG_DIR=/usr/local/etc/config
-ADDON_DIR=/usr/local/addons/${ADDONNAME}
+ADDON_DIR=/usr/local/addons/${ADDON_NAME}
 RCD_DIR=${CONFIG_DIR}/rc.d
 
 mount /usr/local || true
@@ -17,5 +17,7 @@ chmod 755 ${RCD_DIR}
 
 cp -af addon/* ${ADDON_DIR}
 cp -af rc.d/* ${RCD_DIR}
+cp -af VERSION ${ADDON_DIR}
 
 sync
+
