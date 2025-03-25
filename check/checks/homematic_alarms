@@ -25,17 +25,16 @@ def check_homematic_alarms(item, params, parsed):
     #with open("/tmp/bla", "aw") as bla:
     #  bla.write(repr(messages))
 
-    for msg,attr in messages.items():
-      if item == 'ALARM Messages':
-        state = 2
-        devices.append(msg + ": " + attr[0] + ", state: " + attr[1] + " (last: " + attr[2] + ")")
+    for msg,t,s,desc,count,last in messages:
+      state = 2
+      devices.append(msg + ": " + desc + ", state: " + s + " (" + count + "x, last: " + last + ")")
 
   if state == 0:
     return 0, 'No issues reported'
 
   return state, ', '.join(devices)
 
-check_info['homematic.alarms'] = {
+check_info['homematic_alarms'] = {
   'check_function':      check_homematic_alarms,
   'inventory_function':  inventory_homematic_alarms,
   'parse_function':      parse_homematic_alarms,
