@@ -7,7 +7,7 @@ load tclrpc.so
 set latest ""
 
 # set result [catch {exec curl -s https://raspberrymatic.de/LATEST-VERSION.js} verstring]
-set result [catch {exec curl -s https://openccu.de/LATEST-VERSION.js} verstring]
+set result [catch {exec curl -sL --max-time 10 https://openccu.de/LATEST-VERSION.js} verstring]
 set result [regexp {homematic\.com\.setLatestVersion\('(.+)', 'HM-RASPBERRYMATIC'\);} $verstring match latest ]
 set result [catch {exec grep PLATFORM /VERSION | cut -d= -f2} platform]
 set result [catch {exec grep VERSION /VERSION | cut -d= -f2} currentversion]
