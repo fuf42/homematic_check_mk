@@ -72,10 +72,15 @@ def check_homematic_addons(item, section):
   
     state = State.OK
     summary = "Version: %s" % local
-    if remote:
-      if remote != local:
+    # the CCU writes "n/a" (or nothing) when its update lookup failed;
+    # that is not a version, so we can't compare and don't raise a WARN
+    unknown = ("", "n/a", "na", "none", "unknown")
+    if remote and remote.strip().lower() not in unknown:
+      if remote.strip().lower() != (local or "").strip().lower():
         summary = summary + " (Update available: %s (!))" % remote
         state = State.WARN
+    elif remote is not None:
+      summary = summary + " (update check unavailable)"
 
     yield Result(state = state, summary = summary)
 
