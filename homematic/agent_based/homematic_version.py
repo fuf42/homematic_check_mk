@@ -53,10 +53,15 @@ def check_homematic_version(section):
     versioninfo, t, local, remote = section[0]
     #print( versioninfo, t, local, remote )
 
-    if local != remote:
-       yield Result(state=State.WARN, summary="Firmware %s (%s is available (!))" % (local, remote))
+    # the CCU sends an empty value (or "n/a") when its update lookup failed;
+    # that is not a version, so we cannot compare and do not raise a WARN
+    remote_clean = (remote or "").strip().lower()
+    if remote_clean in ("", "n/a", "na", "none", "unknown"):
+        yield Result(state=State.OK, summary="Firmware %s (update check unavailable)" % local)
+    elif (local or "").strip().lower() != remote_clean:
+        yield Result(state=State.WARN, summary="Firmware %s (%s is available (!))" % (local, remote))
     else:
-       yield Result(state=State.OK, summary="Firmware %s (up to date)" % local)
+        yield Result(state=State.OK, summary="Firmware %s (up to date)" % local)
 
 
 
