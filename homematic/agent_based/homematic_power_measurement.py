@@ -21,7 +21,7 @@ import pprint
 
 def discover_homematic_power_measurement(section):
 
-  pprint.pprint(section)
+  # pprint.pprint(section)
   
   for line in section:
     data = section[line]
